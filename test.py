@@ -11,7 +11,13 @@ from supabase import create_client as supa_create_client, Client
 import tempfile
 import time
 import csv
+from flask import Flask
+from flask_restful import Resource, Api, reqparse
+import pandas as pd
+import ast
 
+app = Flask(__name__)
+api = Api(app)
 
 class JobTitleMatch:
     """
@@ -1112,6 +1118,9 @@ class CompanyMatch(JobTitleMatch):
 
 class handler(BaseHTTPRequestHandler):
 
+    def get(self):
+        return {'data': "conan"}, 200
+        
     def do_POST(self):
         self.send_response(200)
         self.end_headers()
@@ -1245,3 +1254,6 @@ class handler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({'received': 'failed'}).encode())
 
             return 
+
+ 
+api.add_resource(handler, '/users')  # '/users' is our entry point
